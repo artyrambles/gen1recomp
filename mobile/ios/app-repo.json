@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.22",
+          "date": "2026-09-27",
+          "size": 38596309,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.22/gen1recomp++-0.3.22-ios.ipa",
+          "localizedDescription": "goia fixed her thing maybe\n\n## Issues closed\n\n- #1697 Standardize identification of mod-created options/settings screens\n- #1699 [Save editor] Option to sort out the items\n- #1701 Trading inside the game\n- #2452 Xbox controller loses connection to game periodically\n- #2493 Performance option change freezes game/recomp on Android\n- #2496 Timing is off when using switches in the Mansion\n- #2499 Secret Key jingle wrong\n- #2500 Top half of grass not rendered on top of character sprites\n- #2501 PP Color Doesnt Show when PP is 0 or close to 0\n- #2502 Shiny Animation Not Showing\n- #2503 Not evolving right\n\n## Contributors\n\n- @1Jamie\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.21",
           "date": "2026-09-26",
           "size": 38592835,
