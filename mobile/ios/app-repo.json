@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.29",
+          "date": "2026-09-28",
+          "size": 41342753,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.29/gen1recomp++-0.3.29-ios.ipa",
+          "localizedDescription": "Download the right version for your device below.\n\n## Issues closed\n\n- #2515 Moving through trees during cut animation\n- #2516 Wrong message when trying to use rod\n- #2518 Unique items have their quantity displayed\n- #2519 Cannot trade farfetched from gen 1 to gen 2\n- #2521 A couple of bugs when using the PC in Pallet Town\n- #2522 Wrong stylization in Oak's lab\n- #2523 Town Map disappears too late\n- #2525 Low HP warning sound stops too late after healing\n- #2526 No Water Reflection\n\n## Contributors\n\n- @1Jamie\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.27",
           "date": "2026-09-28",
           "size": 41347000,
