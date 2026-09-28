@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.24",
+          "date": "2026-09-28",
+          "size": 40671687,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.24/gen1recomp++-0.3.24-ios.ipa",
+          "localizedDescription": "This update turned pikachu into punkachu.\nJust kidding.\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.23",
           "date": "2026-09-28",
           "size": 40680707,
