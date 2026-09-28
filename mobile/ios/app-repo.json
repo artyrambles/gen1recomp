@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.23",
+          "date": "2026-09-28",
+          "size": 40680707,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.23/gen1recomp++-0.3.23-ios.ipa",
+          "localizedDescription": "Download the right version for your device below.\n\n## Issues closed\n\n- #2494 Managed to break my party on fire red.\n- #2520 Teaching a HM and TM does not show \"Able!\" or \" Not Able!\"\n\n## Contributors\n\n- @bryanthaboi\n- shanemcgovernie"
+        },
+        {
           "version": "0.3.22",
           "date": "2026-09-27",
           "size": 38596309,
