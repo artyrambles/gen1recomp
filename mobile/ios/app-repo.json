@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.33",
+          "date": "2026-09-29",
+          "size": 44763900,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.33/gen1recomp++-0.3.33-ios.ipa",
+          "localizedDescription": "Just a couple gne 1 buggies.\n\n## Issues closed\n\n- #2548 PC layout issues\n- #2554 \"Use next Pokemon?\" options issue\n- #2557 Extra poison flash when healing in center\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.32",
           "date": "2026-09-29",
           "size": 44763689,
