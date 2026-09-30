@@ -28,6 +28,7 @@ function TilesetAnim.install(cache)
 end
 
 function TilesetAnim.invalidate()
+  TilesetAnim._manifests = nil
   TilesetAnim._pairs = {}
   TilesetAnim._visible = {}
   TilesetAnim.counter = 0
@@ -42,9 +43,18 @@ local function native_root()
 end
 
 local function read_manifest(cache, pair)
+  local memo = TilesetAnim._manifests
+  if not memo then
+    memo = {}
+    TilesetAnim._manifests = memo
+  end
+  local hit = memo[pair]
+  if hit ~= nil then return hit or nil end
   local src = cache:read(native_root() .. pair .. "/anim_manifest.lua")
   local chunk = src and load(src, "@anim_manifest.lua", "t", {})
-  return chunk and chunk() or nil
+  local man = chunk and chunk() or nil
+  memo[pair] = man or false
+  return man
 end
 
 local function rse_luts(cache, pair)
@@ -295,10 +305,7 @@ function TilesetAnim.bindPair(pair, atlas)
   local entry = TilesetAnim._pairs[pair]
   if entry == false then return false end
   if not entry then
-    local src = cache:read(
-      (Extract.CACHE_ROOT or "data/generated/gba") .. "/native/" .. pair .. "/anim_manifest.lua")
-    local chunk = src and load(src, "@anim_manifest.lua", "t", {})
-    local man = chunk and chunk()
+    local man = read_manifest(cache, pair)
     if not man then
       TilesetAnim._pairs[pair] = false
       return false
@@ -320,27 +327,45 @@ function TilesetAnim.bindPair(pair, atlas)
   end
   TilesetAnim._visible[pair] = true
   if entry.rse then return true end
-  for _, kind in ipairs({ "water", "sand", "flower" }) do
-    TilesetAnim._applyKind(entry, kind, TilesetAnim["_" .. kind .. "Frame"])
-  end
+  TilesetAnim._applyKind(entry, "water", TilesetAnim._waterFrame)
+  TilesetAnim._applyKind(entry, "sand", TilesetAnim._sandFrame)
+  TilesetAnim._applyKind(entry, "flower", TilesetAnim._flowerFrame)
   return true
 end
 
 function TilesetAnim.setVisiblePairs(visible)
   local set = TilesetAnim._visible
-  for pair in pairs(set) do set[pair] = nil end
-  for pair in pairs(visible) do set[pair] = true end
+  for pair in pairs(set) do
+    if not visible[pair] then set[pair] = nil end
+  end
+  for pair in pairs(visible) do
+    if not set[pair] then
+      set[pair] = true
+      -- a General atlas coming back into view catches up before it is drawn
+      local entry = TilesetAnim._pairs[pair]
+      if entry and not entry.rse then
+        TilesetAnim._applyKind(entry, "water", TilesetAnim._waterFrame)
+        TilesetAnim._applyKind(entry, "sand", TilesetAnim._sandFrame)
+        TilesetAnim._applyKind(entry, "flower", TilesetAnim._flowerFrame)
+      end
+    end
+  end
 end
 
-local function get_frame_piece(bank, frame, mi, frameRgba)
+local function get_frame_piece(bank, frame, mi, srcOff)
   if not (love and love.image and love.image.newImageData) then return nil end
-  bank.pieces = bank.pieces or {}
+  local pieces = bank.pieces
+  if not pieces then
+    pieces = {}
+    bank.pieces = pieces
+  end
   local pKey = frame * 1000 + mi
-  local piece = bank.pieces[pKey]
+  local piece = pieces[pKey]
   if piece then return piece end
-  local ok, imgData = pcall(love.image.newImageData, 16, 16, "rgba8", frameRgba)
+  local ok, imgData = pcall(love.image.newImageData, 16, 16, "rgba8",
+    bank.rgba:sub(srcOff + 1, srcOff + MID_RGBA))
   if ok and imgData then
-    bank.pieces[pKey] = imgData
+    pieces[pKey] = imgData
     return imgData
   end
   return nil
@@ -357,20 +382,29 @@ function TilesetAnim._applyKind(entry, kind, frame)
 
   local nMids = #bank.mids
   local cols = ts.cols or 16
+  local image = ts.image
+  -- pokeemerald-style partial upload (see rse_paste): push only the 16x16
+  -- metatiles this bank owns instead of re-uploading the whole atlas.
+  local partial = image ~= nil and image.replacePixels ~= nil
+  local full = false
   for mi, mid in ipairs(bank.mids) do
     local slot = ts.midToSlot[mid]
     if slot then
       local srcOff = (frame * nMids + (mi - 1)) * MID_RGBA
       local ax = (slot % cols) * 16
       local ay = math.floor(slot / cols) * 16
-      local frameRgba = bank.rgba:sub(srcOff + 1, srcOff + MID_RGBA)
-      local piece = get_frame_piece(bank, frame, mi, frameRgba)
+      local piece = get_frame_piece(bank, frame, mi, srcOff)
       local pasted = false
       if piece and ts.imageData.paste then
         ts.imageData:paste(piece, ax, ay)
         pasted = true
+        if partial and not full then
+          local ok = pcall(image.replacePixels, image, piece, 1, 1, ax, ay, false)
+          if not ok then full = true end
+        end
       end
       if not pasted then
+        local frameRgba = bank.rgba:sub(srcOff + 1, srcOff + MID_RGBA)
         local i = 1
         for y = 0, 15 do
           for x = 0, 15 do
@@ -382,11 +416,12 @@ function TilesetAnim._applyKind(entry, kind, frame)
             i = i + 4
           end
         end
+        full = true
       end
     end
   end
-  if ts.image and ts.image.replacePixels then
-    ts.image:replacePixels(ts.imageData)
+  if partial then
+    if full then image:replacePixels(ts.imageData) end
   elseif ts.image and love and love.graphics then
     ts.image = love.graphics.newImage(ts.imageData)
     if ts.image.setFilter then ts.image:setFilter("nearest", "nearest") end
