@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.36",
+          "date": "2026-09-30",
+          "size": 44765924,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.36/gen1recomp++-0.3.36-ios.ipa",
+          "localizedDescription": "Em perf enhance 2\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.35",
           "date": "2026-09-30",
           "size": 44773569,
