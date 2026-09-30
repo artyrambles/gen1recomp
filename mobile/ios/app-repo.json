@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.38",
+          "date": "2026-09-30",
+          "size": 44812985,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.38/gen1recomp++-0.3.38-ios.ipa",
+          "localizedDescription": "Lots of bug fixes and further performance enhancing drugs for Gen 3 \n\n## Issues closed\n\n- #2564 Able to bike in doors\n- #2570 [Emerald] Oldale's Pokemon Center incomplete text\n- #2572 Unable to return speed to normal (Emerald)\n- #2573 Graphical Glitch with Textboxes (Emerald)\n- #2577 battle.low_health_alarm hook not working on gen3 games.\n\n## Contributors\n\n- @1Jamie\n- @bryanthaboi\n- Shane McGovern"
+        },
+        {
           "version": "0.3.37",
           "date": "2026-09-30",
           "size": 44766547,
