@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.41",
+          "date": "2026-10-01",
+          "size": 44821840,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.41/gen1recomp++-0.3.41-ios.ipa",
+          "localizedDescription": "inching closer to gen 1 perfection OH! so close. \n\n## Issues closed\n\n- #2555 Wrong jingle for receiving rods\n- #2558 Captain not turning during dialogue\n- #2560 Small S.S. Anne departure inaccuracies\n- #2561 Clip into trees at the start\n- #2562 Pokeballs all black in Rock Tunnel when not using Flash\n- #2563 Wall bump sound when quickly turning on the bike\n- #2581 Vending machine issues\n- #2583 NPCs keep talking after giving TMs\n- #2584 Items removed from list too soon\n- #2585 Spin tile speed still way too high\n- #2589 Extra text when using Guard Spec.\n- #2590 Starting Giovanni fight in the Hideout is buggy\n- #2592 Wrong TM42 jingle\n- #2593 [FRLG/Emerald] Missing control setting\n- #2596 Use Bike in Area You Should Not\n- #2597 Feebas won't evolve with high beauty\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.40",
           "date": "2026-09-30",
           "size": 44816287,
