@@ -350,6 +350,10 @@ function Map.load(mod, game, mapId, opts)
   if not MapIds.isGame3Map(mapId) then
     return nil, "not a game3 map"
   end
+  if not opts.seamless then
+    local StayMessage = package.loaded["src.ui.game3.message"]
+    if StayMessage and StayMessage.closeStay then StayMessage.closeStay() end
+  end
   -- pret RestartWildEncounterImmunitySteps on LoadMap / LoadMapFromWarp: every
   -- map entry restarts the wild encounter grace period. Unconditional, so the
   -- seamless connection crossing between two routes resets it too.
@@ -439,7 +443,7 @@ function Map.load(mod, game, mapId, opts)
   local session = (Runtime.getSession and Runtime.getSession()) or (game and game.session)
   local save = game and game.save
   local Player = require("src.core.game3.player")
-  local onCyclingRoad = Player.isOnCyclingRoad and Player.isOnCyclingRoad(session, x, y)
+  local onCyclingRoad = Player.isOnCyclingRoad and Player.isOnCyclingRoad(session, x, y, def)
   local wasBiking = (Player.biking == true)
   if opts.initialLoad and not wasBiking then
     wasBiking = (session and session.biking == true) or (save and save.biking == true) or false
@@ -455,9 +459,6 @@ function Map.load(mod, game, mapId, opts)
     else
       local pair = def and (def.pair or (def.midLayout and def.midLayout.pair))
       keepBike = type(pair) == "string" and pair:find("outdoor", 1, true) ~= nil
-    end
-    if onCyclingRoad and not (Player.surfing or Player.surfHopping) then
-      keepBike = true
     end
   end
 
