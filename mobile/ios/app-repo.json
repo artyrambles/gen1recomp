@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.43",
+          "date": "2026-10-01",
+          "size": 44933101,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.43/gen1recomp++-0.3.43-ios.ipa",
+          "localizedDescription": "Hopefully perfecting save import / export for good.\n\n## Issues closed\n\n- #2603 Pokemon ability don't change when evolves\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.42",
           "date": "2026-10-01",
           "size": 44824883,
