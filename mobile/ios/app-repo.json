@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.42",
+          "date": "2026-10-01",
+          "size": 44824883,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.42/gen1recomp++-0.3.42-ios.ipa",
+          "localizedDescription": "Gen 3 should be even more performant after this.\n\n## Issues closed\n\n- #2498 Method mod.world:spawnNpc does not provide NPC an ID\n- #2601 [Gen 3 / 0.3.39] Sweet Scent finishes its field animation without starting an encounter\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.41",
           "date": "2026-10-01",
           "size": 44821840,
