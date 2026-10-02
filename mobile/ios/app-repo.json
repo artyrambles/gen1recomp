@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.46",
+          "date": "2026-10-02",
+          "size": 45004681,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.46/gen1recomp++-0.3.46-ios.ipa",
+          "localizedDescription": "some bug fixes and major gen 3 performance enhancement\n\n## Issues closed\n\n- #2618 Trainer ID generation is broken\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.45",
           "date": "2026-10-02",
           "size": 44989096,
