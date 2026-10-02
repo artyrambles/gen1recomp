@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.45",
+          "date": "2026-10-02",
+          "size": 44989096,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.45/gen1recomp++-0.3.45-ios.ipa",
+          "localizedDescription": "Save editor enhancements part two\n\n## Issues closed\n\n- #2619 Problems with save editor\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.44",
           "date": "2026-10-02",
           "size": 44977295,
