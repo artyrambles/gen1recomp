@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.48",
+          "date": "2026-10-02",
+          "size": 45941961,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.48/gen1recomp++-0.3.48-ios.ipa",
+          "localizedDescription": "bugs\n\n## Issues closed\n\n- #2578 MENU SPEED doesn't apply to menus opened from the overworld or battle\n- #2588 bug: Filter mods by game doesn’t filter.\n- #2617 Softlock under the bikers bridge\n- #2623 Goldenrod City music playing at Goldenrod Radio Tower instead of Team Rocket Takeover music\n- #2626 trick house: trick master doesn't appear\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.47",
           "date": "2026-10-02",
           "size": 45941144,
