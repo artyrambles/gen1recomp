@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.47",
+          "date": "2026-10-02",
+          "size": 45941144,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.47/gen1recomp++-0.3.47-ios.ipa",
+          "localizedDescription": "windows fix and spooky nation. try this version if ur on windows and u have the stuck restart to update and maybe the NEXT version after this will work correctly.\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.46",
           "date": "2026-10-02",
           "size": 45004681,
