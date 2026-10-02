@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.44",
+          "date": "2026-10-02",
+          "size": 44977295,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.44/gen1recomp++-0.3.44-ios.ipa",
+          "localizedDescription": "+ save editor enhanced\n\n## Issues closed\n\n- #2604 Ghosts spawn after you complete a contest\n- #2605 Can't select GBA rom for gen3\n- #2607 Small Snorlax sprite issue\n- #2608 Post-battle Snorlax text when running\n- #2610 Sealed chamber hole can't be opened with dig\n- #2611 Ball animation & sound out of sync\n- #2612 Pokemon sprites stay onscreen during stone evolution\n- #2613 Surf animation too short\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.43",
           "date": "2026-10-01",
           "size": 44933101,
