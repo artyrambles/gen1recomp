@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.50",
+          "date": "2026-10-03",
+          "size": 45950599,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.50/gen1recomp++-0.3.50-ios.ipa",
+          "localizedDescription": "Also save editor should now hopefully see custom maps. (Gen 3 custom maps)\n\n## Issues closed\n\n- #2632 Guy has wrong dialogue after getting Earth Badge\n- #2634 Blank lines missing in NPCs dialogue\n- #2637 Gen 3 Bike breaks doors and Rename Screen is wrong.\n- #2638 Battle tent issue\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.49",
           "date": "2026-10-02",
           "size": 45948378,
