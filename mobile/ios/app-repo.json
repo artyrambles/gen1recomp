@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.51",
+          "date": "2026-10-03",
+          "size": 45960216,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.51/gen1recomp++-0.3.51-ios.ipa",
+          "localizedDescription": "Download the right version for your device below.\n\n## Issues closed\n\n- #2639 Buena's Password aren't playing in the Radio\n- #2640 Edit Buena's Password points in save editor\n- #2642 Pokemon stats never increase when you check Pokemon summary\n- #2643 Game look for a move that has id 0 in battle palace and crash\n- #2644 Player turning too early before second Route 22 rival fight\n- #2645 Solarbeam text inaccurate\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.50",
           "date": "2026-10-03",
           "size": 45950599,
