@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.53",
+          "date": "2026-10-05",
+          "size": 50922309,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.53/gen1recomp++-0.3.53-ios.ipa",
+          "localizedDescription": "cleaning a couple ruby / sapphire bugs and overal gen 3 performance enhancements\n\n## Contributors\n\n- @bryanthaboi\n- @thibautbus"
+        },
+        {
           "version": "0.3.52",
           "date": "2026-10-05",
           "size": 50907816,
