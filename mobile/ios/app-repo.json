@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.55",
+          "date": "2026-10-06",
+          "size": 52935624,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.55/gen1recomp++-0.3.55-ios.ipa",
+          "localizedDescription": "ID Sync fix and new feature - BOX!\n\n## Contributors\n\n- @bryanthaboi\n- @Nexhas28"
+        },
+        {
           "version": "0.3.54",
           "date": "2026-10-06",
           "size": 50919741,
