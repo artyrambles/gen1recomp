@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.56",
+          "date": "2026-10-06",
+          "size": 52942319,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.56/gen1recomp++-0.3.56-ios.ipa",
+          "localizedDescription": "… CLOSES #2702, CLOSES #2703, CLOSES #2705, CLOSES #2706, CLOSES #2707, CLOSES #2709, CLOSES #2710, CLOSES #2711, CLOSES #2712, CLOSES #2714\r\n\r\nCLOSES #2693, CLOSES #2697, CLOSES #2698, CLOSES #2699, CLOSES #2701, CLOSES #2702, CLOSES #2703, CLOSES #2705, CLOSES #2706, CLOSES #2707, CLOSES #2709, CLOSES #2710, CLOSES #2711, CLOSES #2712, CLOSES #2714\n\n## Issues closed\n\n- #2693 (Modding API) The pokemon.icon hook doesn't exist/fire in gen3 games.\n- #2697 Your father voice stops you from watering a weird tree\n- #2698 [Save Editor] Edit Berry Powder currency in FR/LG and Emerald\n- #2699 Game crash when you try to teach you pokemon tm/hm\n- #2701 Pokemon Sapphire Naming UI is cut off\n- #2702 Pokemon Emerald uses the wrong sprite going into battle\n- #2703 starter pokemon are to big on selection\n- #2705 FireRed and LeafGreen crashes when entering ferry port area\n- #2706 Ripping your gen 3 save with Japanese Pokemon breaks the names\n- #2707 Trainer memo info is missing\n- #2709 the box using a item its to small\n- #2710 Pokedex Flashes are wrong catching mons\n- #2711 Crashes when trying to withdraw a Pokemon from the daycare\n- #2712 Mew can't be encounter\n- #2714 rebinding/controls menu not working\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.55",
           "date": "2026-10-06",
           "size": 52935624,
