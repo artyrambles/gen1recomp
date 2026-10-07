@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.61",
+          "date": "2026-10-07",
+          "size": 53198152,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.61/gen1recomp++-0.3.61-ios.ipa",
+          "localizedDescription": "union for me, union for you, union for everyone on earth!\n\n## Contributors\n\n- @bryanthaboi\n- @HimioneGranger\n- @thibautbus"
+        },
+        {
           "version": "0.3.60",
           "date": "2026-10-07",
           "size": 52995898,
