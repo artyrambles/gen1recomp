@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.59",
+          "date": "2026-10-07",
+          "size": 52985361,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.59/gen1recomp++-0.3.59-ios.ipa",
+          "localizedDescription": "+ BOX enhancements 🦅 _(that's a bird emoji because it has something to do w migration mods)_\n\n## Issues closed\n\n- #2726 [Save editor] Edit Unown's form\n- #2727 berry in bag is broken so is ui\n- #2729 quick attack and box is messed up on the battle menu\n- #2730 Petalburg Woods encounter animation sometimes dosen't work\n- #2731 battle animation bug\n- #2733 Rock Tomb Animation\n- #2734 Uproar Animation is broken\n- #2735 Confusion and status changes don't animate and leech life doesn't shoot needle\n- #2736 Emerald white out crash\n- #2737 Mr. Stones Decapitated\n- #2740 launcher settings getting randomly reset/forgotten\n\n## Contributors\n\n- @bryanthaboi"
+        },
+        {
           "version": "0.3.58",
           "date": "2026-10-07",
           "size": 52972673,
