@@ -736,11 +736,12 @@ function Game3:zoomStep(delta)
   local offset = Zoom.step(delta, Renderer:fitScale())
   if type(self.options) == "table" then
     self.options.zoom = offset
-    self:writeOptions()
+    lazyReq("src.core.DeferredWrite").schedule("options", function() self:writeOptions() end)
   end
 end
 
 function Game3:update(dt)
+  lazyReq("src.core.DeferredWrite").tick()
   local speed = self:logicSpeed()
   self._frameSpeed = speed
   FixedStep.maxAccum = FixedStep.catchupLimit(speed, dt)
@@ -885,6 +886,9 @@ function Game3:_hotkey(key)
     return true
   elseif hk == "1" then
     self:_cycleSpeed(1)
+    return true
+  elseif hk == "0" then
+    self:_cycleSpeed(-1)
     return true
   elseif hk == "3" then
     if self:zoomGateOK() then
@@ -1120,6 +1124,18 @@ function Game3:gamepadaxis(joystick, axis, value)
         return
       end
     end
+    local stickEvents = self.input and self.input.stickAxisEvents and self.input:stickAxisEvents(axis, value)
+    if stickEvents then
+      for i = 1, #stickEvents do
+        local ev = stickEvents[i]
+        if ev.phase == "pressed" then
+          self:_padPressedBody(joystick, ev.button)
+        elseif ev.phase == "released" then
+          self:_padReleasedBody(joystick, ev.button)
+        end
+      end
+      return
+    end
     if self.input and self.input.gamepadaxis then self.input:gamepadaxis(joystick, axis, value) end
   end
   if not ModRuntime.wantsHook("input.gamepad") then return vanilla() end
@@ -1184,6 +1200,8 @@ function Game3:focus(f)
   if f then
     if self.input then self.input:reconcile() end
     Audio.onFocusGained()
+  else
+    lazyReq("src.core.DeferredWrite").flush("options")
   end
 end
 
@@ -1191,6 +1209,7 @@ function Game3:visible(v)
   if v then
     self:onResume()
   else
+    lazyReq("src.core.DeferredWrite").flush("options")
     if self.input then self.input:reset() end
     if self.touchControls then self.touchControls:reset() end
   end
@@ -1442,6 +1461,7 @@ function Game3:returnToTitle(opts)
 end
 
 function Game3:reset()
+  lazyReq("src.core.DeferredWrite").flush("options")
   self.questPlayback = nil
   Help.reset()
   Audio.endSession()
@@ -1480,6 +1500,7 @@ function Game3:reset()
 end
 
 function Game3:quit()
+  lazyReq("src.core.DeferredWrite").flush("options")
   if self:quickSaveAllowed() then self:saveGame() end
 end
 

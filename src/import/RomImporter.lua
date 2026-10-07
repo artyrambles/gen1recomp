@@ -1240,19 +1240,37 @@ local function consumePick(self, name, safName, ok)
   self.pickSkip[name] = true
 end
 
+local function romPickerExts()
+  local exts = { "gb", "gbc", "gba" }
+  local ok, RomArchive = pcall(require, "src.import.RomArchive")
+  if ok then
+    local caps = RomArchive.capabilities()
+    if caps.zip then exts[#exts + 1] = "zip" end
+    if caps.z7 then exts[#exts + 1] = "7z" end
+  end
+  return exts
+end
+
 local function chooseRom(promptName)
   promptName = promptName or "Pokemon"
   local prompt = shellSafe("Choose your " .. promptName .. " ROM")
   local platform = love.system.getOS()
+  local quoted, globs, semis = {}, {}, {}
+  for _, ext in ipairs(romPickerExts()) do
+    quoted[#quoted + 1] = ('"%s"'):format(ext)
+    globs[#globs + 1] = "*." .. ext
+    semis[#semis + 1] = "*." .. ext
+  end
   if platform == "OS X" then
     return commandOutput(
-      ([[osascript -e 'POSIX path of (choose file with prompt "%s" of type {"gb", "gbc", "gba"})' 2>/dev/null]])
-        :format(prompt))
+      ([[osascript -e 'POSIX path of (choose file with prompt "%s" of type {%s})' 2>/dev/null]])
+        :format(prompt, table.concat(quoted, ", ")))
   elseif platform == "Windows" then
     local script = table.concat({
       HostPicker.WIN_OPEN_DIALOG,
       "$d.Title='" .. prompt .. "';",
-      "$d.Filter='Game Boy / GBA ROM (*.gb;*.gbc;*.gba)|*.gb;*.gbc;*.gba|All files (*.*)|*.*';",
+      "$d.Filter='Game Boy / GBA ROM (" .. table.concat(semis, ";") .. ")|"
+        .. table.concat(semis, ";") .. "|All files (*.*)|*.*';",
       -- copy the pick to a plain-ASCII temp name and answer with that:
       -- the console's OEM codepage would mangle a non-ASCII path
       -- (Pokémon -> Pok\x82mon) and io.open on Windows needs ANSI bytes,
@@ -1268,11 +1286,12 @@ local function chooseRom(promptName)
       'powershell -NoProfile -STA -Command "' .. script .. '"')
   elseif platform == "Linux" then
     local path = commandOutput(
-      ([[zenity --file-selection --title="%s" --file-filter="Game Boy / GBA ROM | *.gb *.gbc *.gba" 2>/dev/null]])
-        :format(prompt))
+      ([[zenity --file-selection --title="%s" --file-filter="Game Boy / GBA ROM | %s" 2>/dev/null]])
+        :format(prompt, table.concat(globs, " ")))
     if path then return path end
     return commandOutput(
-      [[kdialog --getopenfilename "$HOME" "*.gb *.gbc *.gba|Game Boy / GBA ROM" 2>/dev/null]])
+      ([[kdialog --getopenfilename "$HOME" "%s|Game Boy / GBA ROM" 2>/dev/null]])
+        :format(table.concat(globs, " ")))
   end
   return nil
 end
@@ -1400,7 +1419,7 @@ local function chooseSav()
   local platform = love.system.getOS()
   if platform == "OS X" then
     return commandOutput(
-      ([[osascript -e 'POSIX path of (choose file with prompt "%s" of type {"sav", "lua"})' 2>/dev/null]])
+      ([[osascript -e 'POSIX path of (choose file with prompt "%s" of type {"sav", "srm", "lua"})' 2>/dev/null]])
         :format(prompt))
   elseif platform == "Windows" then
     local script = table.concat({
@@ -1420,11 +1439,11 @@ local function chooseSav()
       'powershell -NoProfile -STA -Command "' .. script .. '"')
   elseif platform == "Linux" then
     local path = commandOutput(
-      ([[zenity --file-selection --title="%s" --file-filter="Save file | *.sav *.lua" 2>/dev/null]])
+      ([[zenity --file-selection --title="%s" --file-filter="Save file | *.sav *.srm *.lua" 2>/dev/null]])
         :format(prompt))
     if path then return path end
     return commandOutput(
-      [[kdialog --getopenfilename "$HOME" "*.sav *.lua|Save file" 2>/dev/null]])
+      [[kdialog --getopenfilename "$HOME" "*.sav *.srm *.lua|Save file" 2>/dev/null]])
   end
   return nil
 end
@@ -1862,11 +1881,17 @@ function RomImporter:focus(f)
       self.pickerPendingModId = nil
       self.pickerPendingImportId = nil
       self.requiredImportLegacyRomPick = nil
+    elseif self.cartLegacyModPick and self.pickerPendingKind == "cart"
+        and pickError:find("picked_mod", 1, true) then
+      self.pickerPendingKind, self.pickerPendingVersion = nil, nil
+      self.cartLegacyModPick = nil
+      self._cartNotice = text
     elseif pickError:find("picked_mod", 1, true) then
       if self.pickerPendingKind == "skin" then
         self.pickerPendingKind = nil
         self._skinNotice = { ok = false, text = text }
       else
+        self.pickerPendingKind = nil
         self.modNotice = { ok = false, text = text }
       end
     elseif self.pickerPendingKind == "box" then
@@ -1880,6 +1905,7 @@ function RomImporter:focus(f)
         or self.pickerPendingKind == "cart" then
       self.pickerPendingKind = nil
       self.pickerPendingVersion = nil
+      self.cartLegacyModPick = nil
       self._cartNotice = text
     else
       self:setError(text)
@@ -1937,6 +1963,14 @@ function RomImporter:focus(f)
   end
   local modName = findPendingMod(false, self.pickSkip)
   if modName then
+    if self.pickerPendingKind == "cart" and self.cartLegacyModPick then
+      local version = self.pickerPendingVersion or self._cartPopup or self.tab
+      self.pickerPendingKind, self.pickerPendingVersion = nil, nil
+      self.cartLegacyModPick = nil
+      consumePick(self, modName, "picked_mod.zip",
+        self:_installCartFile(modName, version))
+      return
+    end
     if self.pickerPendingKind == "skin" then
       self.pickerPendingKind = nil
       self:_installSkinZip(modName)
@@ -1944,6 +1978,7 @@ function RomImporter:focus(f)
         self._skinNotice and self._skinNotice.ok)
       return
     end
+    self.pickerPendingKind = nil
     self:_installMod(modName)
     consumePick(self, modName, "picked_mod.zip",
       self.modNotice and self.modNotice.ok)
@@ -2063,6 +2098,29 @@ function RomImporter:startData(data, displayName, sourcePath)
   if type(data) ~= "string" then
     self:setError("The selected file could not be read.")
     return
+  end
+  local RomArchive = require("src.import.RomArchive")
+  local kind = RomArchive.kind(data)
+  if kind then
+    if #data > RomArchive.MAX_ARCHIVE_BYTES then
+      self:setError(("That .%s is %.1f MiB; a ROM archive only has to hold "
+        .. "one small cart. Drop the raw .gb/.gbc/.gba instead.")
+        :format(kind, #data / 1024 / 1024))
+      return
+    end
+    local bytes, entry = RomArchive.unwrap(data, displayName, {
+      isRomName = isRomFilename,
+      acceptedSize = isAcceptedRomSize,
+      prefer = function(candidate)
+        return self:_versionForSha1(sha1(candidate)) ~= nil
+      end,
+    })
+    if not bytes then
+      self:setError(entry)
+      return
+    end
+    data = bytes
+    displayName = displayName and (displayName .. " / " .. entry) or entry
   end
   if not isAcceptedRomSize(#data) then
     self:setError(("Expected a 1 MiB Game Boy ROM (%s), a "
@@ -2505,6 +2563,21 @@ function RomImporter:startPath(path)
     require("src.import.RomSources").absolute(path))
 end
 
+function RomImporter:_zipHoldsRom(data)
+  local ok, RomArchive = pcall(require, "src.import.RomArchive")
+  if not ok then return false end
+  if RomArchive.kind(data) ~= "zip" then return false end
+  if not RomArchive.capabilities().zip then return false end
+  local bytes = RomArchive.unwrap(data, nil, {
+    isRomName = isRomFilename,
+    acceptedSize = isAcceptedRomSize,
+    prefer = function(candidate)
+      return self:_versionForSha1(sha1(candidate)) ~= nil
+    end,
+  })
+  return bytes ~= nil
+end
+
 function RomImporter:filedropped(file)
   if self.workState == "working" then return end
   -- A dropped .zip is a mod archive: hand it straight to the mods installer
@@ -2524,9 +2597,21 @@ function RomImporter:filedropped(file)
     return
   end
   if name:lower():match("%.zip$") then
-    -- On the SKINS tab a zip is a skin; everywhere else it is a mod archive.
+    -- On the SKINS tab a zip is a skin; elsewhere a cart inside wins, else
+    -- it stays a mod archive.
     if self.tab == "skins" then
       self:_installSkinZip(file)
+    elseif GameVersion.VERSIONS[self.tab] then
+      local data, readError = readDroppedFile(file)
+      if not data then
+        self:setError("Could not read the dropped file: " .. tostring(readError))
+        return
+      end
+      if self:_zipHoldsRom(data) then
+        self:startData(data, name, name)
+        return
+      end
+      self:_installMod(file)
     else
       self:_installMod(file)
     end
@@ -2705,7 +2790,11 @@ function RomImporter:chooseMod()
       return
     end
     self._modPickOpenWait = nil
+    self.pickerPendingKind = "mod"
+    self.pickerPendingVersion = nil
+    self.cartLegacyModPick = nil
     if not pickFile("mod") then
+      self.pickerPendingKind = nil
       self._modPickStalled = true
       self.modNotice = { ok = false,
         text = self:_modInboxHint(Strings("Could not open the file picker.")) }
@@ -3231,6 +3320,8 @@ function RomImporter:chooseSaveImport(version)
       return
     end
     self.androidPendingVersion = version
+    self.pickerPendingKind, self.pickerPendingVersion = nil, nil
+    self.cartLegacyModPick = nil
     if not pickFile("sav") then
       self.androidPendingVersion = nil
       self.saveNotice[version] = { ok = false,
@@ -3250,7 +3341,7 @@ function RomImporter:chooseSaveImport(version)
     if okKit and Kit.FileBrowser then
       self._padCursorActive = false
       Kit.FileBrowser.open({
-        title = "Select Save (.sav / .lua)",
+        title = "Select Save (.sav / .srm / .lua)",
         mode = "save",
         onSelect = function(pickedPath)
           self:_importSave(version, pickedPath)
@@ -3269,7 +3360,7 @@ function RomImporter:chooseSaveImport(version)
   if okKit and Kit.FileBrowser then
     self._padCursorActive = false
     Kit.FileBrowser.open({
-      title = "Select Save (.sav / .lua)",
+      title = "Select Save (.sav / .srm / .lua)",
       mode = "save",
       onSelect = function(pickedPath)
         self:_importSave(version, pickedPath)
@@ -3416,9 +3507,14 @@ function RomImporter:choose(version)
     local name, data = findPendingRom(self, self.chooseVersion)
     if name then
       self:startData(data, name)
-    elseif consumePickedRomError(self) then
+      return
+    end
+    if consumePickedRomError(self) then
       return   -- a rejected pick explains itself instead of silently reopening
-    elseif not pickFile() then
+    end
+    self.pickerPendingKind, self.pickerPendingVersion = nil, nil
+    self.cartLegacyModPick = nil
+    if not pickFile() then
       -- Picker unavailable (API < 19, or no document-picker app installed):
       -- fall back to the USB folder-drop path as a friendly notice, not an
       -- error (which would read as a rejected file).
@@ -5710,16 +5806,25 @@ function RomImporter:importCartFile(version)
       consumePick(self, name, PICKED_CART, installed)
       return installed
     end
-    if pickerHasKind("cart") and pickFile("cart") then
-      self.pickerPendingKind = "cart"
-      self.pickerPendingVersion = version
+    local kind
+    if pickerHasKind("cart") then
+      kind = "cart"
+    elseif pickerHasKind("mod") or love.system.pickFileKinds == nil then
+      kind = "mod"
+    end
+    self.pickerPendingKind = "cart"
+    self.pickerPendingVersion = version
+    self.cartLegacyModPick = (kind == "mod") or nil
+    if kind and pickFile(kind) then
       self.pickPending = true
       self.pickTimer = 0
       return true
     end
+    self.pickerPendingKind, self.pickerPendingVersion = nil, nil
+    self.cartLegacyModPick = nil
     local dir = love.filesystem.getSaveDirectory()
     self._cartNotice = Strings(
-      "Could not open the file picker. Copy a .g1rcart into:\n%s", dir)
+      "Could not open the file picker. Update the app, or copy a .g1rcart into:\n%s", dir)
     return false
   end
   if handheldHost() and self:_openCartBrowser(version) then return true end
@@ -6911,6 +7016,35 @@ function RomImporter:_newSlot(scope)
   self:_refreshSlots(scope)
   self.activeSlot[scope] = id
   self.slotScroll[scope] = math.huge
+end
+
+function RomImporter:_duplicateSlot(scope, id)
+  if self.workState == "working" then return end
+  local SaveData = require("src.core.SaveData")
+  local cart = cartOfScope(scope)
+  local base
+  for _, slot in ipairs(self.slots[scope] or {}) do
+    if slot.id == id then base = slot.label or slot.name break end
+  end
+  base = (type(base) == "string" and base ~= "") and base or tostring(id)
+  local label = utf8Cap(Strings("%s copy", utf8Cap(base, MAX_SLOT_LABEL - 5)),
+    MAX_SLOT_LABEL)
+  local newId, err
+  if cart then
+    newId, err = SaveData.duplicateCartSlot(cart, id, label)
+  else
+    newId, err = SaveData.duplicateSlot(scope, id, label)
+  end
+  if not newId then
+    self.saveNotice[scope] = { ok = false, text = tostring(err) }
+    return
+  end
+  self:_selectSlot(scope, newId)
+  self:_refreshSlots(scope)
+  self.activeSlot[scope] = newId
+  local eng = self:_syncEngine()
+  if eng then pcall(eng.noteSaveWritten, eng) end
+  self.saveNotice[scope] = { ok = true, text = Strings("Copied to %s.", label) }
 end
 
 -- Mouse wheel: forwarded into the FlexLove view (installed onto the global
@@ -8697,7 +8831,7 @@ end
 -- Release stats for a FIND MODS row, resolved the same way the MODS tab
 -- does it: the mod's own GitHub releases through ModUpdate's cached fetch,
 -- so an installed mod's repo is instant and every result lands in
--- options.modUpdateCache for six hours.  A feed that publishes stats wins
+-- mod_update_cache.lua for six hours.  A feed that publishes stats wins
 -- outright (fresher, zero network); otherwise the repo is fetched, one
 -- entry per frame so opening the tab cannot stall for the whole listing.
 -- The result is memoized per id for the session; a repo with no releases
