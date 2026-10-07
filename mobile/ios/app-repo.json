@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.62",
+          "date": "2026-10-07",
+          "size": 56231585,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.62/gen1recomp++-0.3.62-ios.ipa",
+          "localizedDescription": "blah bla blah ps4\n\n## Issues closed\n\n- #2742 Android: External music causes game audio to freeze after audio focus changes\n\n## Contributors\n\n- @bryanthaboi\n- @tomasmorello\n- Autoresearch"
+        },
+        {
           "version": "0.3.61",
           "date": "2026-10-07",
           "size": 53198152,
