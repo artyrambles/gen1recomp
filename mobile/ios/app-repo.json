@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.58",
+          "date": "2026-10-07",
+          "size": 52972673,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.58/gen1recomp++-0.3.58-ios.ipa",
+          "localizedDescription": "Clean up, bugs, and contributor work\n\n## Issues closed\n\n- #2484 Option to duplicate (back up) save files directly via the launcher\n- #2600 Speed Down keyboard hotkey?\n- #2694 Bugs when changing speed in portmaster build, which weren't present in 0.3.19\n- #2708 Naming a pokemon in starter and capture doesn't display the pokemon sprite and gender details\n- #2713 Mod-authored outdoor maps roll wild encounters on every step (indoor rule ignores outdoor)\n- #2723 Healing & damaging speed too high\n\n## Contributors\n\n- @bryanthaboi\n- @flaviodelima\n- @Nexhas28\n- @pokeparadox\n- @thibautbus"
+        },
+        {
           "version": "0.3.57",
           "date": "2026-10-06",
           "size": 52956167,
