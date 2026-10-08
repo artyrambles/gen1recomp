@@ -13,6 +13,13 @@
       "category": "games",
       "versions": [
         {
+          "version": "0.3.63",
+          "date": "2026-10-08",
+          "size": 56248514,
+          "downloadURL": "https://github.com/bryanthaboi/gen1recomp/releases/download/v0.3.63/gen1recomp++-0.3.63-ios.ipa",
+          "localizedDescription": "Download the right version for your device below.\n\n## Issues closed\n\n- #2732 Audio sync issue on Android for Gen 2\n- #2746 Sootopolis City camera oddities during unique events\n- #2748 Aqua team member Matt invisble\n- #2752 [Save Editor] Edit Volcanic Ash currency in R/S/E\n- #2756 Firered start menu and intro text is garbled\n\n## Contributors\n\n- @bryanthaboi\n- @Nexhas28"
+        },
+        {
           "version": "0.3.62",
           "date": "2026-10-07",
           "size": 56231585,
